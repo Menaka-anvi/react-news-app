@@ -135,66 +135,56 @@ export default class News extends Component {
     };
   }
 
-  async componentDidMount() {
-    try{
-    // const apikey= process.env.REACT_APP_NEWS_API_KEY;
-    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-      this.setState({
-        loading:true
-      })
-      
-    let data = await fetch(`/.netlify/functions/news?=${this.state.page}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
-    let parsedData = await data.json();
+ async componentDidMount() {
+  try {
+    this.setState({ loading: true });
 
-    if (!parsedData.articles){
-      this.setState({articles: mockArticles,loading:false});
-    }else{
-          console.log(parsedData);
-    this.setState({
-      articles: parsedData.articles,
-      totalResults:parsedData.totalResults,
-      loading:false
-      });
-    }
-  }catch (error){
-    this.setState({articles:mockArticles,loading:false});
-  }
- }
-
-
-  handleNext=async()=>{
-    // const apikey= process.env.REACT_APP_NEWS_API_KEY;
-      this.setState({
-        loading:true
-      })
-
-    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-    let data = await fetch(`/.netlify/functions/news?=${this.state.page+1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
+    let data = await fetch(
+      `/.netlify/functions/news?page=${this.state.page}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`
+    );
     let parsedData = await data.json();
 
     this.setState({
-      page:this.state.page+1,
-      articles: parsedData.articles,
-      loading:false
+      articles: parsedData.articles || mockArticles,
+      totalResults: parsedData.totalResults || mockArticles.length,
+      loading: false
     });
+  } catch (error) {
+    this.setState({ articles: mockArticles, loading: false });
   }
+}
 
-  handlePrev=async()=>{
-    if(this.state.page <=1) return;
-    // const apikey= process.env.REACT_APP_NEWS_API_KEY;
-      this.setState({
-        loading:true
-      })
-    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-    let data = await fetch(`/.netlify/functions/news?=${this.state.page - 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
-    let parsedData = await data.json();
-    
-    this.setState({
-      page:this.state.page-1,
-      articles: parsedData.articles,
-      loading:false
-    });
-  }
+handleNext = async () => {
+  this.setState({ loading: true });
+
+  let data = await fetch(
+    `/.netlify/functions/news?page=${this.state.page + 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`
+  );
+  let parsedData = await data.json();
+
+  this.setState({
+    page: this.state.page + 1,
+    articles: parsedData.articles || mockArticles,
+    loading: false
+  });
+};
+
+handlePrev = async () => {
+  if (this.state.page <= 1) return;
+  this.setState({ loading: true });
+
+  let data = await fetch(
+    `/.netlify/functions/news?page=${this.state.page - 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`
+  );
+  let parsedData = await data.json();
+
+  this.setState({
+    page: this.state.page - 1,
+    articles: parsedData.articles || mockArticles,
+    loading: false
+  });
+};
+
 
 
 

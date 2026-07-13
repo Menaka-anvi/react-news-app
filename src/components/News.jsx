@@ -137,13 +137,13 @@ export default class News extends Component {
 
   async componentDidMount() {
     try{
-    const apikey= process.env.REACT_APP_NEWS_API_KEY;
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    // const apikey= process.env.REACT_APP_NEWS_API_KEY;
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page}&pageSize=${this.props.pageSize}`;
       this.setState({
         loading:true
       })
       
-    let data = await fetch(`./netlify/functions/news?=$ {this.state.page}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
+    let data = await fetch(`/.netlify/functions/news?=${this.state.page}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
     let parsedData = await data.json();
 
     if (!parsedData.articles){
@@ -163,13 +163,13 @@ export default class News extends Component {
 
 
   handleNext=async()=>{
-    const apikey= process.env.REACT_APP_NEWS_API_KEY;
+    // const apikey= process.env.REACT_APP_NEWS_API_KEY;
       this.setState({
         loading:true
       })
 
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-    let data = await fetch(`./netlify/functions/news?=$ {this.state.page + 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+    let data = await fetch(`/.netlify/functions/news?=${this.state.page+1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
     let parsedData = await data.json();
 
     this.setState({
@@ -181,12 +181,12 @@ export default class News extends Component {
 
   handlePrev=async()=>{
     if(this.state.page <=1) return;
-    const apikey= process.env.REACT_APP_NEWS_API_KEY;
+    // const apikey= process.env.REACT_APP_NEWS_API_KEY;
       this.setState({
         loading:true
       })
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-    let data = await fetch(`./netlify/functions/news?=$ {this.state.page - 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=474f5cc2097d47618f067114f5a2c712&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+    let data = await fetch(`/.netlify/functions/news?=${this.state.page - 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`);
     let parsedData = await data.json();
     
     this.setState({

@@ -216,11 +216,11 @@ handlePrev = async () => {
 
           <div className="d-grid gap-2 d-md-flex justify-content-md-end">
             <button className="btn btn-danger me-md-2" type="button" onClick={this.handlePrev}
-            disabled={this.state.page <= 1}>
+            disabled={this.state.loading || this.state.page <= 1}>
               &laquo;Prev
             </button>
             <button className="btn btn-danger" type="button" onClick={this.handleNext}
-            disabled={this.state.page >= Math.ceil(this.state.totalResults/this.props.pageSize)}>
+            disabled={this.state.loading || this.state.page >= Math.ceil(this.state.totalResults/this.props.pageSize)}>
               Next &raquo;
             </button>
           </div>

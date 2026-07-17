@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import Newsitems from "./Newsitems";
 import PropTypes from "prop-types";
 import Spinner from "./Spinner";
-import mockArticles from "../mockData";
-
-
 
 export default class News extends Component {
   // articles = [
@@ -129,76 +126,67 @@ export default class News extends Component {
     console.log("i am constructor");
     this.state = {
       articles: [],
-      loading:false,
+      loading: false,
       page: 1,
       totalResults: 0,
     };
   }
 
- async componentDidMount() {
-  try {
-    this.setState({ loading: true });
+  updateNews = async () => {
+    try {
+      this.setState({ loading: true });
 
-    let data = await fetch(
-      `/.netlify/functions/news?page=${this.state.page}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`
-    );
-    let parsedData = await data.json();
+      let data = await fetch(
+        `/.netlify/functions/news?page=${this.state.page}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`,
+      );
+      let parsedData = await data.json();
 
-    this.setState({
-      articles: parsedData.articles || mockArticles,
-      totalResults: parsedData.totalResults || mockArticles.length,
-      loading: false
-    });
-  } catch (error) {
-    this.setState({ articles: mockArticles, loading: false });
+      console.log("NewsAPI response;", parsedData);
+      console.log("Articles array:", parsedData.articles);
+
+      this.setState({
+        articles: parsedData.articles, // fallback
+        totalResults: parsedData.totalResults,
+        loading: false,
+      });
+    } catch (error) {
+      console.error("Error fetching live news:", error);
+      this.setState({
+        articles: [],
+        totalResults: 0,
+        loading: false,
+      });
+    }
+  };
+
+  componentDidMount() {
+    this.updateNews();
   }
-}
 
-handleNext = async () => {
-  this.setState({ loading: true });
+  handleNext = () => {
+    this.setState({ page: this.state.page + 1 }, () => {
+      this.updateNews();
+    });
+  };
 
-  let data = await fetch(
-    `/.netlify/functions/news?page=${this.state.page + 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`
-  );
-  let parsedData = await data.json();
-
-  this.setState({
-    page: this.state.page + 1,
-    articles: parsedData.articles || mockArticles,
-    loading: false
-  });
-};
-
-handlePrev = async () => {
-  if (this.state.page <= 1) return;
-  this.setState({ loading: true });
-
-  let data = await fetch(
-    `/.netlify/functions/news?page=${this.state.page - 1}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`
-  );
-  let parsedData = await data.json();
-
-  this.setState({
-    page: this.state.page - 1,
-    articles: parsedData.articles || mockArticles,
-    loading: false
-  });
-};
-
-
-
+  handlePrev = () => {
+    if (this.state.page <= 1) return;
+    this.setState({ page: this.state.page - 1 }, () => {
+      this.updateNews();
+    });
+  };
 
   render() {
     return (
       <>
         <h1 className="text-center text-danger">Live News</h1>
-        
-        {this.state.loading && <Spinner/> }
+
+        {this.state.loading && <Spinner />}
 
         <div className="container">
           <div className="row g-3">
-            {this.state.articles.map((element) => {
-              return (
+            {Array.isArray(this.state.articles) &&
+              this.state.articles.map((element) => (
                 <div className="col-md-4 mb-4" key={element.url}>
                   <Newsitems
                     title={element.title}
@@ -210,17 +198,29 @@ handlePrev = async () => {
                     source={element.source.name}
                   />
                 </div>
-              );
-            })}
+              ))}
+            ;
           </div>
 
-          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button className="btn btn-danger me-md-2" type="button" onClick={this.handlePrev}
-            disabled={this.state.loading || this.state.page <= 1}>
+          <div className="d-flex justify-content-center my-3">
+            <button
+              className="btn btn-danger me-md-2"
+              type="button"
+              onClick={this.handlePrev}
+              disabled={this.state.loading || this.state.page <= 1}
+            >
               &laquo;Prev
             </button>
-            <button className="btn btn-danger" type="button" onClick={this.handleNext}
-            disabled={this.state.loading || this.state.page >= Math.ceil(this.state.totalResults/this.props.pageSize)}>
+            <button
+              className="btn btn-danger"
+              type="button"
+              onClick={this.handleNext}
+              disabled={
+                this.state.loading ||
+                this.state.page >=
+                  Math.ceil(this.state.totalResults / this.props.pageSize)
+              }
+            >
               Next &raquo;
             </button>
           </div>

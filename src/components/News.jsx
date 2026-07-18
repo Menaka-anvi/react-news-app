@@ -136,9 +136,7 @@ export default class News extends Component {
     try {
       this.setState({ loading: true });
 
-      let data = await fetch(
-        `/.netlify/functions/news?page=${this.state.page}&country=${this.props.country}&category=${this.props.category}&pageSize=${this.props.pageSize}`,
-      );
+      let data = await fetch('https://newsapi.org/v2/everything?q=tesla&from=2026-06-18&sortBy=publishedAt&apiKey=daa4ce7758f84729b96b883492d832d7')
       let parsedData = await data.json();
 
       console.log("NewsAPI response;", parsedData);

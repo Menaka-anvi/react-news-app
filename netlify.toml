@@ -10,7 +10,7 @@
 
 [dev]
   command = "npm start"
-  functions = "netlify/functions"
+  targetPort = 3000
 
-
-  
+[functions]
+  directory = "netlify/functions"

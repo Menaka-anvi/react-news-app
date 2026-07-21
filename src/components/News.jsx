@@ -132,30 +132,30 @@ export default class News extends Component {
     };
   }
 
-  updateNews = async () => {
-    try {
-      this.setState({ loading: true });
+updateNews = async () => {
+  try {
+    this.setState({ loading: true });
 
-      let data = await fetch(`https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&page=${this.state.page}&max=${this.props.pageSize}&apikey=e5c5e03066b19e68f35f1cb0ba15e97f`);
-      let parsedData = await data.json();
+    let response = await fetch(`/api/news?category=${this.props.category}&country=${this.props.country}&page=${this.state.page}&pageSize=${this.props.pageSize}`);
+    let parsedData = await response.json();
 
-      console.log("NewsAPI response;", parsedData);
-      console.log("Articles array:", parsedData.articles);
+    console.log("Proxy response:", parsedData);
 
-      this.setState({
-        articles: parsedData.articles, // fallback
-        totalResults: parsedData.totalResults,
-        loading: false,
-      });
-    } catch (error) {
-      console.error("Error fetching live news:", error);
-      this.setState({
-        articles: [],
-        totalResults: 0,
-        loading: false,
-      });
-    }
-  };
+    this.setState({
+      articles: parsedData.articles || [],
+      totalResults: parsedData.totalResults || 0,
+      loading: false,
+    });
+  } catch (error) {
+    console.error("Error fetching live news:", error);
+    this.setState({
+      articles: [],
+      totalResults: 0,
+      loading: false,
+    });
+  }
+};
+
 
   componentDidMount() {
     this.updateNews();

@@ -188,7 +188,7 @@ updateNews = async () => {
                   <Newsitems
                     title={element.title}
                     description={element.description}
-                    url={element.Image}
+                    url={element.image}
                     linkurl={element.url}
                     author={element.author}
                     date={element.publishedAt}

@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 export default class Newsitems extends Component {
   render() {
     let { title, description, url, linkurl, author, date, source } = this.props;
+
+    console.log(url);
+    
     return (
         <div className="card h-100">
           <img src={url} alt="News" className="card-img-top"  />

@@ -143,7 +143,7 @@ updateNews = async () => {
 
     this.setState({
       articles: parsedData.articles || [],
-      totalResults: parsedData.totalResults || 0,
+      totalResults: parsedData.totalArticles || 0,
       loading: false,
     });
   } catch (error) {
@@ -155,7 +155,6 @@ updateNews = async () => {
     });
   }
 };
-
 
   componentDidMount() {
     this.updateNews();
@@ -197,7 +196,6 @@ updateNews = async () => {
                   />
                 </div>
               ))}
-            ;
           </div>
 
           <div className="d-flex justify-content-center my-3">

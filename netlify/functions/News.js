@@ -1,5 +1,5 @@
 export async function handler(event) {
-  const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
+  const apiKey = process.env.REACT_APP_NEWS_API_KEY;
   const { page = 1, country = "us", category = "general", pageSize = 10 } = event.queryStringParameters;
 
   const url = `https://gnews.io/api/v4/top-headlines?country=${country}&category=${category}&page=${page}&pageSize=${pageSize}&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;

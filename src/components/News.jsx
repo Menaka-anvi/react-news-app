@@ -136,7 +136,7 @@ export default class News extends Component {
     try {
       this.setState({ loading: true });
 
-      let data = await fetch('https://gnews.io/api/v4/top-headlines?category=general&lang=en&country=us&max=10&apikey=e5c5e03066b19e68f35f1cb0ba15e97f')
+      let data = await fetch(`https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&page=${this.state.page}&max=${this.props.pageSize}&apikey=e5c5e03066b19e68f35f1cb0ba15e97f`);
       let parsedData = await data.json();
 
       console.log("NewsAPI response;", parsedData);

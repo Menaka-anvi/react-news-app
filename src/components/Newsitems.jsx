@@ -5,7 +5,7 @@ export default class Newsitems extends Component {
     let { title, description, url, linkurl, author, date, source } = this.props;
     return (
         <div className="card h-100">
-          <img src={url || "https://via.placeholder.com/300x200"} alt="not found" className="card-img-top" onError={(e)=>{ e.target.src="https://via.placeholder.com/300x200";}} />
+          <img src={url} alt="News" className="card-img-top"  />
 
           <div className="card-body">
             {/* Badge in top-right corner */}
